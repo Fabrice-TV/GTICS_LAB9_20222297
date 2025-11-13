@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table { 
+            border-collapse: collapse; 
+            width: 100%; 
+            margin-top: 20px;
+        }
+        th, td { 
+            border: 1px solid #000; 
+            padding: 8px; 
+            text-align: left;
+        }
+        th { 
+            background-color: #ddd; 
+        }
+        .error { 
+            color: red; 
+            margin: 10px 0;
+        }
+        .busqueda {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Listado de Productos</h1>
+
+    <div class="busqueda">
+        <h3>Buscar Producto</h3>
+        <form th:action="@{/buscar}" method="get">
+            <label>ID:</label>
+            <input type="text" name="id" placeholder="Ingrese el ID" />
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+
+    <div th:if="${errorBusqueda}" class="error">
+        <p th:text="${errorBusqueda}"></p>
+    </div>
+
+    <div th:if="${productoEncontrado}">
+        <h3>Resultado de la búsqueda:</h3>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+            </tr>
+            <tr>
+                <td th:text="${productoEncontrado.id}"></td>
+                <td th:text="${productoEncontrado.nombre}"></td>
+                <td th:text="${productoEncontrado.descripcion}"></td>
+                <td th:text="${productoEncontrado.precio}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <h3>Todos los Productos</h3>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+        </tr>
+        <tr th:each="p : ${productos}">
+            <td th:text="${p.id}"></td>
+            <td th:text="${p.nombre}"></td>
+            <td th:text="${p.descripcion}"></td>
+            <td th:text="${p.precio}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(productos)}">
+            <td colspan="4" style="text-align: center;">
+                No hay productos disponibles.
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
